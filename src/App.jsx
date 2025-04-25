@@ -1,6 +1,8 @@
 import React from 'react'
 import { useState } from 'react'
 import Search from './components/search.jsx'
+import CurrentForecast from './components/currentForecast.jsx'
+// import singleForecast from './components/singleForecast.jsx'
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState('')
@@ -12,11 +14,11 @@ const App = () => {
           <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
         </header>
   
-        <div className='currentForecast'>
-  
+        <div className='w-[100%] mt-5 h-[35%]  flex items-center justify-center'>
+          <CurrentForecast />
         </div>
 
-        <div className='7DayForecast'>
+        <div className='w-[100%] mt-10 h-[45%] bg-white'>
 
         </div>
       </div>
