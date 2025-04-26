@@ -97,6 +97,7 @@ useEffect(() => {
 
   return () => clearTimeout(delayDebounce)
 }, [searchTerm])
+```
 
 **Why this matters:**
 - ⛔ Prevents calling the API with every keystroke
