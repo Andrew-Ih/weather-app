@@ -40,7 +40,7 @@ A sleek and responsive weather application built using **React**, **Vite**, and 
    ```
 
 3. **Create a `.env.local` file**
-   Create a `.env.local` file in the root directory and add your OpenWeatherMap API key:
+   in the root directory and add your OpenWeatherMap API key:
    ```env
    VITE_WEATHER_API_KEY=your_api_key_here
    ```
