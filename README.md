@@ -1,17 +1,124 @@
-# React + Vite
+# 🌤️ React Weather App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A sleek and responsive weather application built using **React**, **Vite**, and **Tailwind CSS**, allowing users to search for a city and instantly get the **current weather** and a **5-day forecast** powered by the OpenWeatherMap API.
 
-Currently, two official plugins are available:
+![Weather App Screenshot](./public/weather-app-image.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🚀 Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- 🔍 **Live Search** with debouncing for optimized API performance
+- 📍 **Current Weather Conditions** (temperature, weather state, highs/lows)
+- 📆 **5-Day Forecast** showing daily noon forecasts
+- 💅 **Modern UI** built with Tailwind CSS
+- 🔁 **Responsive Design** that works across devices
 
+---
 
-### Steps taken
+## 🔧 Technologies Used
 
-1. Using api from OpenWeatherMap.org
+- [React](https://reactjs.org/)
+- [Vite](https://vitejs.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [OpenWeatherMap API](https://openweathermap.org/)
+- JavaScript (ES6+)
+
+---
+
+## 📦 Installation & Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Andrew-Ih/weather-app.git
+   cd weather-app
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Create a `.env.local` file**
+   Create a `.env.local` file in the root directory and add your OpenWeatherMap API key:
+   ```env
+   VITE_WEATHER_API_KEY=your_api_key_here
+   ```
+
+4. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+
+   The app should now be running at `http://localhost:5173`
+
+---
+
+## 🌐 API Information
+
+This app uses the **OpenWeatherMap 5-Day / 3-Hour Forecast API**:
+```
+https://api.openweathermap.org/data/2.5/forecast
+```
+
+We filter forecasts to show the **12:00 PM snapshot** for each of the next five days.
+
+We also fetch current weather data from:
+```
+https://api.openweathermap.org/data/2.5/weather
+```
+
+Both APIs are combined using city name queries and the same API key.
+
+---
+
+## 🧠 Debouncing in Live Search
+
+We implemented **debouncing** using `setTimeout` and `clearTimeout` inside a `useEffect` in React:
+
+```jsx
+useEffect(() => {
+  const delayDebounce = setTimeout(() => {
+    if (searchTerm.length > 2) {
+      fetch(`https://api.openweathermap.org/data/2.5/weather?q=${searchTerm}&appid=${API_KEY}&units=metric`)
+        .then(res => res.json())
+        .then(data => {
+          setWeatherData(data)
+          return fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${searchTerm}&appid=${API_KEY}&units=metric`)
+        })
+        .then(res => res.json())
+        .then(forecast => {
+          const dailyMiddayForecasts = forecast.list.filter(item => item.dt_txt.includes("12:00:00"))
+          setForecastData(dailyMiddayForecasts)
+        })
+        .catch(err => console.error('Error fetching data:', err))
+    }
+  }, 500)
+
+  return () => clearTimeout(delayDebounce)
+}, [searchTerm])
+
+**Why this matters:**
+- ⛔ Prevents calling the API with every keystroke
+- ✅ Only fetches weather data when the user has paused typing
+- 🚀 Reduces unnecessary network traffic and improves user experience
+
+---
+
+## 📸 Preview
+
+The app displays:
+- A search bar to look up cities
+- The current weather summary
+- A 5-card forecast display
+
+---
+
+## 📌 To-Do / Improvements
+
+- Add unit conversion toggle (°C/°F)
+- Add weather icons
+- Add dark mode toggle
+- Cache last searched city
+
+---
