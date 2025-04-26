@@ -9,7 +9,7 @@ const search = ({searchTerm, setSearchTerm}) => {
 
             <input
                 type="text"
-                placeholder="Choose a city"
+                placeholder="Choose a City/Country"
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)} 
             />
